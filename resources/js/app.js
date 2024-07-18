@@ -1,5 +1,6 @@
 import './bootstrap';
 
+///Get Access Token
 document.getElementById("getAccessToken").addEventListener('click', (e) => {
     e.preventDefault()
     axios.post('/get-access-token',{})
@@ -11,6 +12,7 @@ document.getElementById("getAccessToken").addEventListener('click', (e) => {
     })
 });
 
+///Register URLs
 document.getElementById("registerURLs").addEventListener('click', (e) => {
     e.preventDefault()
     axios.post('/register-urls',{})
@@ -20,6 +22,24 @@ document.getElementById("registerURLs").addEventListener('click', (e) => {
         }else{
             document.getElementById("response").innerHTML = response.data.errorMessage
         }
+    })
+    .catch((error) => {
+        console.log("error",error)
+    })
+});
+
+///Simulate Transaction
+document.getElementById("simulate").addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const requestBody = {
+        amount: document.getElementById("amount").value,
+        account: document.getElementById("account").value,
+    }
+
+    axios.post('/simulate-transaction', requestBody)
+    .then((response) => {
+       console.log(response)
     })
     .catch((error) => {
         console.log("error",error)

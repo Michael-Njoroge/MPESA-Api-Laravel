@@ -8,24 +8,6 @@ use Illuminate\Support\Facades\Http;
 
 class MpesaController extends Controller
 {
-    // public function getAccessToken()
-    // {
-        // $url = env('MPESA_ENVIRONMENT') === 0 ? "" : "";
-        // $curl = curl_init($url);
-        // curl_setopt_array(
-        //     $curl,
-        //     array(
-        //         CURLOPT_HTTPHEADER => ['Content-Type: application/json; charset=utf8'],
-        //         CURLOPT_RETURNTRANSFER => true,
-        //         CURLOPT_HEADER => FALSE,
-        //         CURLOPT_USERPWD => env('MPESA_CONSUMER_KEY') . ':' . env('MPESA_CONSUMER_SECRET')
-        //     )
-        // );
-        // $response = json_decode(curl_exec($curl))
-        // curl_close($curl);
-        // return $response;
-    // }
-
     public function getAccessToken()
     {
 
@@ -56,13 +38,32 @@ class MpesaController extends Controller
         $body = array(
             "ShortCode" => env('MPESA_SHORTCODE'),
             "ResponseType" => "Completed",
-            "ConfirmationURL" => env('MPESA_TEST_URL') . '/api/confirmation',
-            "ValidationURL" => env('MPESA_TEST_URL') . '/api/validation'
+            "ConfirmationURL" => 'https://7af8-154-159-237-127.ngrok-free.app/api/confirmation',
+            "ValidationURL" => 'https://7af8-154-159-237-127.ngrok-free.app/api/validation'
         );
 
         $url = env('MPESA_ENVIRONMENT') === '0' 
             ? 'https://sandbox.safaricom.co.ke/mpesa/c2b/v2/registerurl'
             : 'https://api.safaricom.co.ke/mpesa/c2b/v2/registerurl';
+
+        $response = $this->makeHttp($url, $body);
+        return $response;
+    }
+
+    //Customer To Business Simulate Transaction
+    public function simulateTransaction(Request $request)
+    {
+        $body = array(
+            "CommandID" => "CustomerBuyGoodsOnline",
+            "ShortCode" => env('MPESA_SHORTCODE'),
+            "Amount" => $request->amount,
+            "Msisdn" => env('MPESA_TEST_MSISDN'),
+            "BillRefNumber" => $request->account
+        );
+
+        $url = env('MPESA_ENVIRONMENT') === '0' 
+            ? 'https://sandbox.safaricom.co.ke/mpesa/c2b/v2/simulate'
+            : 'https://api.safaricom.co.ke/mpesa/c2b/v2/simulate';
 
         $response = $this->makeHttp($url, $body);
         return $response;
@@ -74,7 +75,8 @@ class MpesaController extends Controller
         // dd($accessToken);
        $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $accessToken,
-            'Content-Type' => 'application/json'
+            'Content-Type' => 'application/json',
+            'ngrok-skip-browser-warning' => 'skip-warning'
         ])->post($url, $body);
 
         return $response;

@@ -38,16 +38,15 @@
                 </div>
                 <div class="card-body">
                     <form action="">
-                        @csrf
                         <div class="form-group">
                             <label for="amount">Amount</label>
-                            <input type="number" name="amount" class="form-control">
+                            <input id="amount" type="number" name="amount" class="form-control">
                         </div>
                          <div class="form-group my-2">
                             <label for="account">Account</label>
-                            <input type="text" name="account" class="form-control">
+                            <input id="account" type="text" name="account" class="form-control">
                         </div>
-                        <button class="btn btn-primary">Simulate</button>
+                        <button id="simulate" class="btn btn-primary">Simulate</button>
                     </form>
                 </div>
             </div>
