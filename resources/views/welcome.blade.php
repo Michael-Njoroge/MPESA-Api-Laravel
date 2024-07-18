@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MPESA STK</title>
+     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Daraja</title>
     @vite('resources/sass/app.scss')
 </head>
 
 <body>
     <div class="container">
-        <h4 class="mt-4 text-center">MPESA STK SIMULATOR</h4>
+        <h4 class="mt-4 text-center">DARAJA SIMULATOR</h4>
         <div class="row mt-4">
             <div class="mx-auto col-sm-8">
             <div class="card">
@@ -18,7 +19,7 @@
                     Obtain access token
                 </div>
                 <div class="card-body">
-                    <h5 id="access_token"></h5>
+                    <h5 class="text-center" id="access_token"></h5>
                     <button id="getAccessToken" class="btn btn-primary">Request access token</button>
                 </div>
             </div>
@@ -27,7 +28,8 @@
                     Register URls
                 </div>
                 <div class="card-body">
-                    <button class="btn btn-primary">Register URls</button>
+                    <div id="response" class="text-center mb-1"></div>
+                    <button id="registerURLs" class="btn btn-primary">Register URls</button>
                 </div>
             </div>
              <div class="card my-4">
@@ -53,19 +55,6 @@
         </div>
     </div>
     @vite('resources/js/app.js')
-    <script>
-        document.getElementById("getAccessToken").addEventListener('click', (e) => {
-            e.preventDefault()
-            axios.post('/get-access-token',{})
-            .then((response) => {
-                console.log(response.data)
-                document.getElementById("access_token").innerHTML = response.data.access_token
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-        })
-    </script>
 </body>
 
 </html>

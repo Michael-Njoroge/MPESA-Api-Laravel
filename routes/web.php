@@ -8,3 +8,4 @@ Route::get('/', function () {
 });
 
 Route::post('/get-access-token', [MpesaController::class, 'getAccessToken']);
+Route::post('/register-urls', [MpesaController::class, 'registerURLs']);
