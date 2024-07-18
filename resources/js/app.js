@@ -7,7 +7,7 @@ document.getElementById("getAccessToken").addEventListener('click', (e) => {
         document.getElementById("access_token").innerHTML = response.data
     })
     .catch((error) => {
-        console.log(error)
+        console.log("error",error)
     })
 });
 
@@ -22,7 +22,7 @@ document.getElementById("registerURLs").addEventListener('click', (e) => {
         }
     })
     .catch((error) => {
-        console.log(error)
+        console.log("error",error)
     })
 });
 
