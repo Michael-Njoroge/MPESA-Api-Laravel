@@ -18,4 +18,6 @@ Route::post('timeout_url',[MpesaResponsesController::class, 'timeoutUrl']);
 // Route::post('/simulate-transaction', [MpesaController::class, 'simulateTransaction']);
 // Route::post('/b2c-simulate', [MpesaController::class, 'b2cRequest']);
 // Route::post('/stk-simulate', [MpesaController::class, 'stkPush']);
+// Route::post('/transaction-status', [MpesaController::class, 'transactionStatus']);
+
 
