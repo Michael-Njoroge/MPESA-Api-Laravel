@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 
 class MpesaController extends Controller
 {
+    //Get AccessToken
     public function getAccessToken()
     {
 
@@ -32,14 +33,14 @@ class MpesaController extends Controller
         }
     }
 
-    //Customer To Business Register URL 
+    //Register URL 
     public function registerURLs()
     {
         $body = array(
             "ShortCode" => env('MPESA_SHORTCODE'),
             "ResponseType" => "Completed",
-            "ConfirmationURL" => 'https://7af8-154-159-237-127.ngrok-free.app/api/confirmation',
-            "ValidationURL" => 'https://7af8-154-159-237-127.ngrok-free.app/api/validation'
+            "ConfirmationURL" =>env('MPESA_TEST_URL') . '/Mpesa-STK/api/confirmation',
+            "ValidationURL" => env('MPESA_TEST_URL') . '/Mpesa-STK/api/validation'
         );
 
         $url = env('MPESA_ENVIRONMENT') === '0' 
@@ -50,7 +51,7 @@ class MpesaController extends Controller
         return $response;
     }
 
-    //Customer To Business Simulate Transaction
+    //Simulate Transaction
     public function simulateTransaction(Request $request)
     {
         $body = array(
@@ -64,6 +65,31 @@ class MpesaController extends Controller
         $url = env('MPESA_ENVIRONMENT') === '0' 
             ? 'https://sandbox.safaricom.co.ke/mpesa/c2b/v2/simulate'
             : 'https://api.safaricom.co.ke/mpesa/c2b/v2/simulate';
+
+        $response = $this->makeHttp($url, $body);
+        return $response;
+    }
+
+    //Business To Customer (B2C) 
+    public function b2cRequest(Request $request)
+    {
+        $body = array(
+            "OriginatorConversationID" =>  "feb5e3f2-fbbc-4745-844c-ee37b546f627",
+           "InitiatorName" =>  env('MPESA_B2C_INITIATOR'),
+           "SecurityCredential" => env('MPESA_B2C_PASSWORD'),
+           "CommandID" => "BusinessPayment",
+           "Amount" => $request->amount,
+           "PartyA" => env('MPESA_SHORTCODE'),
+           "PartyB" => $request->phone,
+           "Remarks" => $request->remarks,
+           "QueueTimeOutURL" => env('MPESA_TEST_URL') . '/Mpesa-STK/api/b2cresult',
+           "ResultURL" => env('MPESA_TEST_URL') . '/Mpesa-STK/api/b2ctimeout',
+           "Occassion" => $request->occassion
+        );
+
+        $url = env('MPESA_ENVIRONMENT') === '0' 
+            ? 'https://sandbox.safaricom.co.ke/mpesa/b2c/v3/paymentrequest'
+            : 'https://api.safaricom.co.ke/mpesa/b2c/v3/paymentrequest';
 
         $response = $this->makeHttp($url, $body);
         return $response;

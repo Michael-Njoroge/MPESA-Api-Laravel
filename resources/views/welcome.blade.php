@@ -38,6 +38,7 @@
                 </div>
                 <div class="card-body">
                     <form action="">
+                        @csrf
                         <div class="form-group">
                             <label for="amount">Amount</label>
                             <input id="amount" type="number" name="amount" class="form-control">
@@ -46,7 +47,7 @@
                             <label for="account">Account</label>
                             <input id="account" type="text" name="account" class="form-control">
                         </div>
-                        <button id="simulate" class="btn btn-primary">Simulate</button>
+                        <button type="button" id="simulate" class="btn btn-primary">Simulate</button>
                     </form>
                 </div>
             </div>
