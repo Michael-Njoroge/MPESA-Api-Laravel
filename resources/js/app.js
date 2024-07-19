@@ -46,6 +46,30 @@ import './bootstrap';
 //     })
 // });
 
+///STK Simulation
+document.getElementById("simulatestk").addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const requestBody = {
+        amount: document.getElementById("amount").value,
+        phone: document.getElementById("phone").value,
+        account: document.getElementById("account").value,
+    }
+
+    axios.post('/stk-simulate', requestBody)
+    .then((response) => {
+        console.log(response.data)
+       if (response.data.ResponseDescription) {
+            document.getElementById("response").innerHTML = response.data.ResponseDescription
+        }else{
+            document.getElementById("response").innerHTML = response.data.errorMessage
+        }
+    })
+    .catch((error) => {
+        console.log("error",error)
+    })
+});
+
 ///B2C Simulation
 document.getElementById("simulateb2c").addEventListener('click', (e) => {
     e.preventDefault();
@@ -59,9 +83,8 @@ document.getElementById("simulateb2c").addEventListener('click', (e) => {
 
     axios.post('/b2c-simulate', requestBody)
     .then((response) => {
-       console.log(response)
-       if (response.data.Result) {
-            document.getElementById("response").innerHTML = response.data.Result.ResponseDesc
+       if (response.data.ResponseDescription) {
+            document.getElementById("response").innerHTML = response.data.ResponseDescription
         }else{
             document.getElementById("response").innerHTML = response.data.errorMessage
         }

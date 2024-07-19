@@ -8,3 +8,5 @@ Route::post('validation',[MpesaResponsesController::class, 'validation']);
 Route::post('confirmation',[MpesaResponsesController::class, 'confirmation']);
 Route::post('b2cresult',[MpesaResponsesController::class, 'b2cCallback']);
 Route::post('b2ctimeout',[MpesaResponsesController::class, 'b2cTimeout']);
+Route::post('stkpush',[MpesaResponsesController::class, 'stkPush']);
+
