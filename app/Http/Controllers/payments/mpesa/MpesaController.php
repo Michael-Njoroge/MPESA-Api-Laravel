@@ -136,6 +136,32 @@ class MpesaController extends Controller
         return $response;
     }
 
+    //Transaction Status 
+    public function transactionStatus(Request $request)
+    {
+        $originatorConversationID = (string) Str::uuid();
+        $body = array(
+           "Initiator" =>  env('MPESA_B2C_INITIATOR'),
+           "SecurityCredential" => env('MPESA_B2C_PASSWORD'),
+           "CommandID" => "TransactionStatusQuery",
+           "TransactionID" => $request->transactionid,
+           "OriginatorConversationID" => $originatorConversationID,
+           "PartyA" => env('MPESA_STK_SHORTCODE'),
+           "IdentifierType" => 4,
+           "ResultURL" => env('MPESA_TEST_URL') . '/api/result_url',
+           "QueueTimeOutURL" => env('MPESA_TEST_URL') . '/api/timeout_url',
+           "Remarks" => "OK",
+           "Occassion" => "OK"
+        );
+
+        $url = env('MPESA_ENVIRONMENT') === '0' 
+            ? 'https://sandbox.safaricom.co.ke/mpesa/transactionstatus/v1/query'
+            : 'https://api.safaricom.co.ke/mpesa/transactionstatus/v1/query';
+
+        $response = $this->makeHttp($url, $body);
+        return $response;
+    }
+
     public function makeHttp($url, $body)
     {
         $accessToken = $this->getAccessToken();

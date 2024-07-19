@@ -36,6 +36,23 @@ class MpesaResponsesController extends Controller
         return response()->json(['status' => 'success']);
     }
 
+    public function resultUrl(Request $request)
+    {
+        Log::info("result Url endpoint hit");
+        Log::info($request->all());
+        return [
+            'ResultCode' => 0,
+            'ResultDesc' => 'Accept Service',
+            'ThirdPartyTransID' => rand(3000,10000)
+        ];
+    }
+
+    public function timeoutUrl(Request $request)
+    {
+        Log::info("ResultTimeout endpoint hit");
+        Log::info($request->all());
+    }
+
     public function b2cTimeout(Request $request)
     {
         Log::info("Timeout endpoint hit");

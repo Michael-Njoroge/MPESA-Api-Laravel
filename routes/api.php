@@ -10,6 +10,8 @@ Route::post('confirmation',[MpesaResponsesController::class, 'confirmation']);
 Route::post('b2cresult',[MpesaResponsesController::class, 'b2cCallback']);
 Route::post('b2ctimeout',[MpesaResponsesController::class, 'b2cTimeout']);
 Route::post('stkpush',[MpesaResponsesController::class, 'stkPush']);
+Route::post('result_url',[MpesaResponsesController::class, 'resultUrl']);
+Route::post('timeout_url',[MpesaResponsesController::class, 'timeoutUrl']);
 
 // Route::post('/get-access-token', [MpesaController::class, 'getAccessToken']);
 // Route::post('/register-urls', [MpesaController::class, 'registerURLs']);
