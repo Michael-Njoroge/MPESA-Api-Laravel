@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class MpesaController extends Controller
 {
@@ -74,17 +75,23 @@ class MpesaController extends Controller
     //STK Transaction 
     public function stkPush(Request $request)
     {
-        $timeStamp = date('YmdHis');
+        $request->validate([
+            'amount' => 'required|numeric|min:1',
+            'phone' => 'required|regex:/^[0-9]{9,12}$/',
+            'account' => 'required|string|max:255'
+        ]);
+        $timeStamp = now()->format('YmdHis');
         $password = env('MPESA_STK_SHORTCODE').env('MPESA_PASSKEY').$timeStamp;
+        $hashedPassword = base64_encode($password);
         $body = array(
            "BusinessShortCode" =>  env('MPESA_STK_SHORTCODE'),
-           "Password" => $password,
+           "Password" => $hashedPassword,
            'Timestamp' =>  $timeStamp,
            "TransactionType" => "CustomerPayBillOnline",  
            "Amount" => $request->amount,
-           "PartyA" => $request->phone,
+           "PartyA" => $this->formatPhoneNumber($request->phone),
            "PartyB" => env('MPESA_STK_SHORTCODE'),
-           "PhoneNumber" => $request->phone,
+           "PhoneNumber" => $this->formatPhoneNumber($request->phone),
            "CallBackURL" => env('MPESA_TEST_URL') . '/api/stkpush',
             "AccountReference" => $request->account,    
             "TransactionDesc" => $request->account
@@ -95,6 +102,11 @@ class MpesaController extends Controller
             : 'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
 
         $response = $this->makeHttp($url, $body);
+        if ($response->successful()) {
+            Log::info('STK Push Response:', $response->json());
+        } else {
+            Log::error('STK Push Error:', $response->json());
+        }
         return $response;
     }
 
@@ -108,7 +120,7 @@ class MpesaController extends Controller
            "SecurityCredential" => env('MPESA_B2C_PASSWORD'),
            "CommandID" => "BusinessPayment",
            "Amount" => $request->amount,
-           "PartyA" => env('MPESA_SHORTCODE'),
+           "PartyA" => env('MPESA_STK_SHORTCODE'),
            "PartyB" => $request->phone,
            "Remarks" => $request->remarks,
            "QueueTimeOutURL" => env('MPESA_TEST_URL') . '/api/b2cresult',
@@ -134,6 +146,22 @@ class MpesaController extends Controller
             'ngrok-skip-browser-warning' => 'skip-warning'
         ])->post($url, $body);
 
+       if ($response->failed()) {
+            Log::error('HTTP Request Failed:', [
+                'url' => $url,
+                'body' => $body,
+                'response' => $response->json()
+            ]);
+        }
+
         return $response;
+    }
+
+    private function formatPhoneNumber($phone)
+    {
+        $phone = (substr($phone, 0, 1) == "+") ? str_replace("+", "", $phone) : $phone;
+        $phone = (substr($phone, 0, 1) == "0") ? preg_replace("/^0/", "254", $phone) : $phone;
+        $phone = (substr($phone, 0, 1) == "7") ? "254{$phone}" : $phone;
+        return $phone;
     }
 }

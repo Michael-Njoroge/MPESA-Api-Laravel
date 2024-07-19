@@ -37,6 +37,7 @@
                    Simulate Transactions
                 </div>
                 <div class="card-body">
+                    <div id="simulate_response" class="text-center mb-1"></div>
                     <form action="">
                         @csrf
                         <div class="form-group">

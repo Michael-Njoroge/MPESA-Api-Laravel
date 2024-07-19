@@ -32,13 +32,8 @@ class MpesaResponsesController extends Controller
 
      public function stkPush(Request $request)
     {
-        Log::info("stk endpoint hit");
-        Log::info($request->all());
-        return [
-            'ResultCode' => 0,
-            'ResultDesc' => 'Accept Service',
-            'ThirdPartyTransID' => rand(3000,10000)
-        ];
+        Log::info('STK Push Callback:', ['request' => $request->all()]);
+        return response()->json(['status' => 'success']);
     }
 
     public function b2cTimeout(Request $request)

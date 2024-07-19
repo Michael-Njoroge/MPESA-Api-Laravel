@@ -39,7 +39,11 @@ document.getElementById("simulate").addEventListener('click', (e) => {
 
     axios.post('/simulate-transaction', requestBody)
     .then((response) => {
-       console.log(response)
+        if (response.data.ResponseDescription) {
+            document.getElementById("simulate_response").innerHTML = response.data.ResponseDescription
+        }else{
+            document.getElementById("simulate_response").innerHTML = response.data.errorMessage
+        }
     })
     .catch((error) => {
         console.log("error",error)
@@ -58,7 +62,6 @@ document.getElementById("simulatestk").addEventListener('click', (e) => {
 
     axios.post('/stk-simulate', requestBody)
     .then((response) => {
-        console.log(response.data)
        if (response.data.ResponseDescription) {
             document.getElementById("response").innerHTML = response.data.ResponseDescription
         }else{
