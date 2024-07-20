@@ -15,13 +15,13 @@ Route::post('timeout_url',[MpesaResponsesController::class, 'timeoutUrl']);
 Route::post('reverse-result-url',[MpesaResponsesController::class, 'reverseUrl']);
 Route::post('reverse-timeout-url',[MpesaResponsesController::class, 'reverseTimeoutUrl']);
 
-// Route::get('/get-access-token', [MpesaController::class, 'getAccessToken']);
-// Route::post('/register-urls', [MpesaController::class, 'registerURLs']);
-// Route::post('/simulate-transaction', [MpesaController::class, 'simulateTransaction']);
-// Route::post('/b2c-simulate', [MpesaController::class, 'b2cRequest']);
-// Route::post('/stk-simulate', [MpesaController::class, 'stkPush']);
-// Route::post('/transaction-status', [MpesaController::class, 'transactionStatus']);
-// Route::post('/transaction-reversal', [MpesaController::class, 'reversalTransaction']);
+Route::get('/get-access-token', [MpesaController::class, 'getAccessToken']);
+Route::post('/register-urls', [MpesaController::class, 'registerURLs']);
+Route::post('/simulate-transaction', [MpesaController::class, 'simulateTransaction']);
+Route::post('/b2c-simulate', [MpesaController::class, 'b2cRequest']);
+Route::post('/stk-simulate', [MpesaController::class, 'stkPush']);
+Route::post('/transaction-status', [MpesaController::class, 'transactionStatus']);
+Route::post('/transaction-reversal', [MpesaController::class, 'reversalTransaction']);
 
 
 
