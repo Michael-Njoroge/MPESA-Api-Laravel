@@ -25,11 +25,12 @@ class MpesaController extends Controller
 
         if ($response->successful()) {
             $responseData = $response->json();
-            if (isset($responseData['access_token'])) {
-                return $responseData['access_token'];
-            } else {
-                return response()->json(['error' => 'Access token not found in response'], 500);
-            }
+            return $responseData;
+            // if (isset($responseData['access_token'])) {
+            //     return $responseData['access_token'];
+            // } else {
+            //     return response()->json(['error' => 'Access token not found in response'], 500);
+            // }
         } else {
             return response()->json(['error' => 'Failed to get access token'], $response->status());
         }
@@ -189,10 +190,10 @@ class MpesaController extends Controller
 
     public function makeHttp($url, $body)
     {
-        $accessToken = $this->getAccessToken();
-        // dd($accessToken);
-       $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $accessToken,
+        $getToken = $this->getAccessToken();
+        
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $getToken['access_token'],
             'Content-Type' => 'application/json',
             'ngrok-skip-browser-warning' => 'skip-warning'
         ])->post($url, $body);

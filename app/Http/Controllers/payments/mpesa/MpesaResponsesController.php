@@ -21,13 +21,8 @@ class MpesaResponsesController extends Controller
 
     public function b2cCallback(Request $request)
     {
-        Log::info("callback endpoint hit");
-        Log::info($request->all());
-        return [
-            'ResultCode' => 0,
-            'ResultDesc' => 'Accept Service',
-            'ThirdPartyTransID' => rand(3000,10000)
-        ];
+        Log::info('B2C Callback:', ['request' => $request->all()]);
+        return response()->json(['status' => 'success']);
     }
 
      public function stkPush(Request $request)
@@ -54,13 +49,8 @@ class MpesaResponsesController extends Controller
     }
      public function reverseUrl(Request $request)
     {
-        Log::info("reverse Url endpoint hit");
-        Log::info($request->all());
-        return [
-            'ResultCode' => 0,
-            'ResultDesc' => 'Accept Service',
-            'ThirdPartyTransID' => rand(3000,10000)
-        ];
+        Log::info('Reversal Callback:', ['request' => $request->all()]);
+        return response()->json(['status' => 'success']);
     }
 
     public function reverseTimeoutUrl(Request $request)
