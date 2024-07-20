@@ -52,6 +52,22 @@ class MpesaResponsesController extends Controller
         Log::info("ResultTimeout endpoint hit");
         Log::info($request->all());
     }
+     public function reverseUrl(Request $request)
+    {
+        Log::info("reverse Url endpoint hit");
+        Log::info($request->all());
+        return [
+            'ResultCode' => 0,
+            'ResultDesc' => 'Accept Service',
+            'ThirdPartyTransID' => rand(3000,10000)
+        ];
+    }
+
+    public function reverseTimeoutUrl(Request $request)
+    {
+        Log::info("reverseTimeout endpoint hit");
+        Log::info($request->all());
+    }
 
     public function b2cTimeout(Request $request)
     {

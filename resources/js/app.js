@@ -3,7 +3,7 @@ import './bootstrap';
 ///Get Access Token
 document.getElementById("getAccessToken").addEventListener('click', (e) => {
     e.preventDefault()
-    axios.post('/get-access-token',{})
+    axios.get('/get-access-token',{})
     .then((response) => {
         document.getElementById("access_token").innerHTML = response.data
     })
@@ -111,6 +111,28 @@ document.getElementById("transactionStatus").addEventListener('click', (e) => {
             document.getElementById("transactionresponse").innerHTML = response.data.ResponseDescription
         }else{
             document.getElementById("transactionresponse").innerHTML = response.data.errorMessage
+        }
+    })
+    .catch((error) => {
+        console.log("error",error)
+    })
+});
+
+///Reversal Transaction
+document.getElementById("reversalTransaction").addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const requestBody = {
+        transactionid: document.getElementById("transactionid").value,
+        amount: document.getElementById("amount").value,
+    }
+
+    axios.post('/transaction-reversal', requestBody)
+    .then((response) => {
+       if (response.data.ResponseDescription) {
+            document.getElementById("reversaltransactionresponse").innerHTML = response.data.ResponseDescription
+        }else{
+            document.getElementById("reversaltransactionresponse").innerHTML = response.data.errorMessage
         }
     })
     .catch((error) => {

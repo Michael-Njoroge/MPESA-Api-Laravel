@@ -150,13 +150,38 @@ class MpesaController extends Controller
            "IdentifierType" => 4,
            "ResultURL" => env('MPESA_TEST_URL') . '/api/result_url',
            "QueueTimeOutURL" => env('MPESA_TEST_URL') . '/api/timeout_url',
-           "Remarks" => "OK",
-           "Occassion" => "OK"
+           "Remarks" => "TransactionStatusQuery",
+           "Occassion" => "TransactionStatusQuery"
         );
 
         $url = env('MPESA_ENVIRONMENT') === '0' 
             ? 'https://sandbox.safaricom.co.ke/mpesa/transactionstatus/v1/query'
             : 'https://api.safaricom.co.ke/mpesa/transactionstatus/v1/query';
+
+        $response = $this->makeHttp($url, $body);
+        return $response;
+    }
+
+    //C2B M-Pesa Reversal Transaction.
+    public function reversalTransaction(Request $request)
+    {
+        $body = array(
+           "Initiator" => env('MPESA_B2C_INITIATOR'),  
+           "SecurityCredential" =>   env('MPESA_B2C_PASSWORD'),  
+           "CommandID" => "TransactionReversal",    
+           "TransactionID" =>  $request->transactionid,    
+           "Amount" => $request->amount,   
+           "ReceiverParty" => env('MPESA_STK_SHORTCODE'),  
+           "RecieverIdentifierType" => 11,    
+           "ResultURL" => env('MPESA_TEST_URL') . '/api/reverse-result-url',    
+           "QueueTimeOutURL" => env('MPESA_TEST_URL') . '/api/reverse-timeout-url',
+           "Remarks" => "TransactionReversal",    
+           "Occasion" => "TransactionReversal"
+        );
+
+        $url = env('MPESA_ENVIRONMENT') === '0' 
+            ? 'https://sandbox.safaricom.co.ke/mpesa/reversal/v1/request'
+            : 'https://api.safaricom.co.ke/mpesa/reversal/v1/request';
 
         $response = $this->makeHttp($url, $body);
         return $response;

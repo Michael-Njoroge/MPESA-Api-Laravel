@@ -19,10 +19,15 @@ Route::get('/transaction-status', function () {
     return view('status');
 });
 
-Route::post('/get-access-token', [MpesaController::class, 'getAccessToken']);
+Route::get('/transaction-reversal', function () {
+    return view('reversal');
+});
+
+Route::get('/get-access-token', [MpesaController::class, 'getAccessToken']);
 Route::post('/register-urls', [MpesaController::class, 'registerURLs']);
 Route::post('/simulate-transaction', [MpesaController::class, 'simulateTransaction']);
 Route::post('/b2c-simulate', [MpesaController::class, 'b2cRequest']);
 Route::post('/stk-simulate', [MpesaController::class, 'stkPush']);
 Route::post('/transaction-status', [MpesaController::class, 'transactionStatus']);
+Route::post('/transaction-reversal', [MpesaController::class, 'reversalTransaction']);
 
